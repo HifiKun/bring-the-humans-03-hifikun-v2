@@ -20,16 +20,27 @@
 // in for /bot and /output:
 //   mkdir -p out && MAKEFUN_BOT_DIR=. MAKEFUN_OUTPUT_DIR=out node main.ts
 
-import { copyFileSync, mkdirSync } from 'node:fs';
+import { copyFileSync, mkdirSync, readFileSync } from 'node:fs';
 import { join } from 'node:path';
 
 const BOT_DIR = process.env.MAKEFUN_BOT_DIR ?? '/bot';
 const OUTPUT_DIR = process.env.MAKEFUN_OUTPUT_DIR ?? '/output';
 
+// The gate only accepts a TikTok video address of the shape
+// https://www.tiktok.com/@<handle>/video/<digits> — check it before copying so
+// a short link or a photo post fails loudly here instead of at grading.
+const videoPath = join(BOT_DIR, 'VIDEO.json');
+const videoUrl = (JSON.parse(readFileSync(videoPath, 'utf8')) as { url: string }).url;
+if (!/^https:\/\/(www|m)\.tiktok\.com\/@[^/]+\/video\/\d+$/.test(videoUrl)) {
+  console.error(`VIDEO.json url is not a TikTok video address: ${videoUrl}`);
+  process.exit(1);
+}
+
 mkdirSync(OUTPUT_DIR, { recursive: true });
 try {
-  copyFileSync(join(BOT_DIR, 'VIDEO.json'), join(OUTPUT_DIR, 'VIDEO.json'));
+  copyFileSync(videoPath, join(OUTPUT_DIR, 'VIDEO.json'));
 } catch (err) {
   console.error(`VIDEO.json could not be copied from ${BOT_DIR}: ${(err as Error).message}`);
   process.exit(1);
 }
+console.log(`VIDEO.json copied: ${videoUrl}`);
