@@ -40,7 +40,7 @@ The video is posted publicly on TikTok from a public account. `VIDEO.json` at th
 repository's root names its full address:
 
 ```json
-{"url": "https://www.tiktok.com/@hifisan/video/7710709612823022849"}
+{"url": "https://www.tiktok.com/@hifisan/video/7710711102144793877"}
 ```
 
 Its caption carries the bounty's line and the play code:
@@ -62,5 +62,5 @@ mkdir -p out && MAKEFUN_BOT_DIR=. MAKEFUN_OUTPUT_DIR=out node main.ts
 ## Status
 
 - Video re-rendered in this session, first and last frames checked.
-- Posted on TikTok: https://www.tiktok.com/@hifisan/video/7710709612823022849
+- Posted on TikTok: https://www.tiktok.com/@hifisan/video/7710711102144793877
 - Submitted: not yet.
